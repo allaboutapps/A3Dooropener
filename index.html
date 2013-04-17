@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dooropener</title>
+	<link href="css/style.css" rel="stylesheet" type="text/css">
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+
+</head>
+<body>
+<div id="wrapper">
+	<div id="logo"></div>
+	
+	<div id="button_div">
+		<div id="open" class="button">Open Door</div>
+	
+		<div>Status: </div>
+		<div id="status" class="green"></div>
+	</div>
+</div>
+
+<script>
+	$("#open").click(function(){
+		// Remove all Classstates
+		$("#status").removeClass().addClass("orange");
+		
+		// Call opening script
+		$("#status").load("scripts/open.php", function(){
+			$("#status").removeClass().addClass("green");
+		});
+	});
+</script>
+
+</body>
+</html>
+
