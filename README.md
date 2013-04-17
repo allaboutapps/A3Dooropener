@@ -10,6 +10,10 @@ After the first boot we installed apache2
 
      sudo apt-get install apache2
 
+Next copy all the files from this repo into the 'www' folder of apache, in our setup it was  
+
+     /var/www/
+
 
 #License:
 [See our BSD 3-Clause License](https://github.com/allaboutapps/A3GridTableView/blob/master/LICENSE.txt)
