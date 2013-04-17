@@ -1,8 +1,8 @@
 
  ..???????????????????????????????????????????????????.     
-.,?????============================================?????. . 
+.,?????============================================?????. 
 +???=================================================+???.  
-???===================================================+???. 
+???===================================================+??? 
 ??+====================================================???  
 ??==========================~~~=========================??  
 ??==================...................:================??  
@@ -33,10 +33,10 @@ IIIIIIIIIIIIIII+...............:IIII+..........?IIIIIIIIII
 IIIIIIIIIIIIIIIIIIII?=~~=+?IIIIIIIIIIIIIIIIIIIIIIIIIIIIIII  
 IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII  
 IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII  
-.IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII.. 
-  IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII .  
+.IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII. 
+ .IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII.  
   .~IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII.     
-   ....................IIIIIIIIIII:...............    .     
+    ...................IIIIIIIIIII:..................     
                       ..IIIIIIIII,.                         
                         .IIIIIII+ .                         
                          .IIIIII.                           
