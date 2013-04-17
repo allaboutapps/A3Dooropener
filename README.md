@@ -5,7 +5,7 @@ We got a intercom system at our new office, but everytime a customer or colleagu
 ***Raspberry Pi***
 At first of all we had to get the Pi to boot up, you can find a good tutorial [here](http://elinux.org/RPi_Easy_SD_Card_Setup/)
 
-After the first boot we installed apache2
+After the first boot we installed apache2  
     sudo apt-get install apache2
 
 
