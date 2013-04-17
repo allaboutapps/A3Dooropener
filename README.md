@@ -22,9 +22,9 @@ After that you should see the door opening website if you open up your browser a
 
 * Servo:  
 
-Power - Pin 2   
-Ground - Pin 6 
-Signal - Pin 12 
+**Power - Pin 2
+**Ground - Pin 6
+**Signal - Pin 12
 
 * Led:  
 
