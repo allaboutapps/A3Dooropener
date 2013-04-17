@@ -1,5 +1,10 @@
-A3Dooropener
-============
+#Motivation
+We got a intercom system at our new office, but everytime a customer or colleague wants to come in, someone has to stand up and hurry to the opening button. To conquer this problem we used a [Raspberry Pi](http://www.raspberrypi.org/) and a little servo
+
+#Setup
+***Raspberry Pi***
+* Webserver
+
 
 #License:
 [See our BSD 3-Clause License](https://github.com/allaboutapps/A3GridTableView/blob/master/LICENSE.txt)
