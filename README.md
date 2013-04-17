@@ -2,7 +2,8 @@
 We got a intercom system at our new office, but everytime a customer or colleague wants to come in, someone has to stand up and hurry to the opening button. To conquer this problem we used a [Raspberry Pi](http://www.raspberrypi.org/) with an [Apache2 Webserver](http://httpd.apache.org/) and a little servo.
 
 #Setup
-***Raspberry Pi***
+***Raspberry Pi***  
+
 At first of all we had to get the Pi to boot up, you can find a good tutorial [here](http://elinux.org/RPi_Easy_SD_Card_Setup/)
 
 After the first boot we installed apache2  
