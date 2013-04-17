@@ -18,7 +18,6 @@ After that you should see the door opening website if you open up your browser a
 
      http://192.168.0.10/
 
-----
 
 ##Pinout  
 
@@ -32,7 +31,6 @@ After that you should see the door opening website if you open up your browser a
 	* Cathode - Pin 6
 	* Anode: - Pin 22  
 
-----
 
 ##How it works
 
