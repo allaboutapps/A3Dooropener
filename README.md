@@ -14,6 +14,23 @@ Next copy all the files from this repo into the 'www' folder of apache, in our s
 
      /var/www/
 
+After that you should see the door opening website if you open up your browser and type in the IP of your raspberry in your network, for example  
+
+     http://192.168.0.10/
+
+***Pinout***  
+
+* Servo:  
+Power - Pin 2
+Ground - Pin 6
+Signal - Pin 12
+
+* Led:
+#Don't forget an resistor (470 Ohm) between Ground and Cathode!  
+
+Cathode - Pin 6
+Anode: - Pin 22
+
 
 #License:
 [See our BSD 3-Clause License](https://github.com/allaboutapps/A3GridTableView/blob/master/LICENSE.txt)
