@@ -13,7 +13,6 @@ import android.view.Window;
 import android.widget.Button;
 
 import com.actionbarsherlock.app.SherlockActivity;
-import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -30,8 +29,7 @@ public class MainActivity extends SherlockActivity {
 	private Button btnKillConnection;
 	
 	private Session sshSession;
-	
-	private Message msg;
+	private ChannelExec channel;
 	
 	private mHandler handler = new mHandler(this);
 	
@@ -40,8 +38,6 @@ public class MainActivity extends SherlockActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_main);
-        
-        msg = new Message();
         
         initUI();
         
@@ -89,10 +85,8 @@ public class MainActivity extends SherlockActivity {
 			
 			@Override
 			public void run() {
+				Message msg = new Message();
 		    	try {
-		            Properties props = new Properties(); 
-		            props.put("StrictHostKeyChecking", "no");
-
 		            // Insert your parameters of your server
 		            String host = getApplicationContext().getResources().getString(R.string.host);
 		            String user = getApplicationContext().getResources().getString(R.string.user);
@@ -109,6 +103,7 @@ public class MainActivity extends SherlockActivity {
 		            sshSession = jsch.getSession(user, host, port);
 		            sshSession.setConfig(config);
 		            sshSession.setPassword(pwd);
+		            sshSession.setTimeout(25000);
 		            sshSession.connect();
 		            
 		            msg.arg1 = CONNECTION_OK;
@@ -121,26 +116,29 @@ public class MainActivity extends SherlockActivity {
 					e.printStackTrace();
 				} 
 		    	handler.sendMessage(msg);
+		    	
+		    	
 			}
 		}).start();
          
     }
     public void sendDoorOpenCommand() { 
     	showLoading(true);
-			try {
-				Channel channel = sshSession.openChannel("exec");
-				// Insert your command to execute the open.php script on your raspberry
-				((ChannelExec) channel).setCommand(getApplicationContext().getResources().getString(R.string.command));
-				channel.setInputStream(null);
-				((ChannelExec) channel).setErrStream(System.err);
-				channel.connect();
-				
-				msg.arg1 = CONNECTION_OK;
-				
-				handler.sendMessage(msg);
-			} catch (JSchException e) {
-				e.printStackTrace();
-			}
+    	Message msg = new Message();
+    			try{
+					channel = (ChannelExec) sshSession.openChannel("exec");
+					// Insert your command to execute the open.php script on your raspberry
+					channel.setCommand(getApplicationContext().getResources().getString(R.string.command));
+					channel.setInputStream(null);
+					channel.setErrStream(System.err);
+					channel.connect();
+					
+					msg.arg1 = CONNECTION_OK;
+					
+					handler.sendMessage(msg);
+				} catch (JSchException e) {
+					e.printStackTrace();
+				}
 
     }
     
@@ -183,10 +181,8 @@ public class MainActivity extends SherlockActivity {
 	private void showLoading(boolean show){
 		if(show){
 			getSherlock().setProgressBarIndeterminateVisibility(true);
-			
 		}else{
 			getSherlock().setProgressBarIndeterminateVisibility(false);
-			
 		}
 	}
 }
