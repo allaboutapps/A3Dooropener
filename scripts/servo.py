@@ -11,6 +11,7 @@ BUTTON_UNPRESSED = 1300
 
 def openDoor():
 	
+	RPIO.setwarnings(False)
 	# Setup ledpin as an output to drive the statusled
 	RPIO.setup(LED, RPIO.OUT)
 	# Create object of PWMs Servoclass
