@@ -8,17 +8,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     tools:context=".MainActivity" >
-
-    <Button 
-        android:id="@+id/btn_connect_to_pi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Connect to Pi"/>
     <Button 
         android:id="@+id/btn_open_door"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:enabled="false"
         android:text="Open Door"/>
     <Button 
         android:id="@+id/btn_kill_connection"
