@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,12 +37,17 @@ public class MainActivity extends SherlockActivity {
 	
 	public static final int CONNECTION_OK = 0;
 	public static final int CONNECTION_FAILED = -1;
+
+	public static final int STATUS_RED = 10;
+	public static final int STATUS_ORANGE = 20;
+	public static final int STATUS_GREEN = 30;
 	
 	private static final String TAG = "DoorOpener";
 	private static final int SSH_TIMEOUT = 25000;
 	
 	private Button btnOpenDoor;
 	private Button btnKillConnection;
+	private FrameLayout frmStatus;
 	private TextView txtStatus;
 	
 	private Session sshSession = null;
@@ -74,6 +80,9 @@ public class MainActivity extends SherlockActivity {
     private void initUI() {
 		btnOpenDoor = (Button) findViewById(R.id.btn_open_door);
 		btnKillConnection = (Button) findViewById(R.id.btn_kill_connection);
+		
+		frmStatus = (FrameLayout) findViewById(R.id.frm_status);
+		frmStatus.setBackgroundResource(R.drawable.shape_status_red);
 		
 		txtStatus = (TextView) findViewById(R.id.txt_status);
 		txtStatus.setText("Not connected");
@@ -111,9 +120,11 @@ public class MainActivity extends SherlockActivity {
 			@Override
 			public void run() {
 				Message msg = new Message();
+				Message statusMsg = new Message();
 		    	try {
 		    		if(sshSession == null || !sshSession.isConnected()){
-		    			txtStatus.setText("Connecting to Pi");
+		    			statusMsg.arg1 = STATUS_ORANGE;
+		    			handler.sendMessage(statusMsg);
 		    			// Insert your parameters of your server
 		    			String host = getApplicationContext().getResources().getString(R.string.host);
 		    			String user = getApplicationContext().getResources().getString(R.string.user);
@@ -142,7 +153,6 @@ public class MainActivity extends SherlockActivity {
 					channel.setCommand(getApplicationContext().getResources().getString(R.string.command));
 					channel.setInputStream(null);
 					channel.setErrStream(System.err);
-					txtStatus.setText("Running Script on Pi");
 					channel.connect();
 		            
 		    	} catch (JSchException e) {
@@ -166,6 +176,7 @@ public class MainActivity extends SherlockActivity {
     	sshSession.disconnect();
     	btnKillConnection.setEnabled(false);
     	txtStatus.setText("Not connected");
+    	frmStatus.setBackgroundResource(R.drawable.shape_status_red);
     }
     
     /**
@@ -188,16 +199,30 @@ public class MainActivity extends SherlockActivity {
 			case CONNECTION_OK:
 				Log.d(TAG, "Connected to Pi");
 				theAct.txtStatus.setText("Connected to Pi");
+				theAct.frmStatus.setBackgroundResource(R.drawable.shape_status_green);
 				theAct.btnKillConnection.setEnabled(true);
+				theAct.showLoading(false);
+				break;
+				
+			case STATUS_RED:
+				
+				break;
+			case STATUS_ORANGE:
+				theAct.txtStatus.setText("Connecting to Pi");
+				theAct.frmStatus.setBackgroundResource(R.drawable.shape_status_orange);
+				break;
+			case STATUS_GREEN:
+				
 				break;
 
 			default:
 				Toast.makeText(theAct, "Connection failed", Toast.LENGTH_SHORT).show();
 				theAct.txtStatus.setText("Not connected");
+				theAct.frmStatus.setBackgroundResource(R.drawable.shape_status_red);
 				Log.d(TAG, "Connection failed");
+				theAct.showLoading(false);
 				break;
 			}
-			theAct.showLoading(false);
 			super.handleMessage(msg);
 		}
 
