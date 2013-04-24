@@ -1,4 +1,4 @@
-package com.eiabea.sshtest;
+package com.eiabea.dooropener;
 
 import java.lang.ref.WeakReference;
 import java.util.Properties;
@@ -24,6 +24,12 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
+/**
+ * Represents the Main Screen of the DoorOpener App
+ * 
+ * @author eiabea
+ *
+ */
 
 public class MainActivity extends SherlockActivity {
 	
@@ -31,6 +37,7 @@ public class MainActivity extends SherlockActivity {
 	public static final int CONNECTION_FAILED = -1;
 	
 	private static final String TAG = "DoorOpener";
+	private static final int SSH_TIMEOUT = 25000;
 	
 	private Button btnOpenDoor;
 	private Button btnKillConnection;
@@ -52,17 +59,24 @@ public class MainActivity extends SherlockActivity {
         
         Intent intent = getIntent();
         
+        // Call resolveIntent only when it has nothing to do with default Actions
         if(!intent.getAction().equals(Intent.ACTION_MAIN)){
         	resolveIntent(intent);
         }
         
     }
 
+    /**
+     * Initializes the UI of the App
+     */
     private void initUI() {
 		btnOpenDoor = (Button) findViewById(R.id.btn_open_door);
 		btnKillConnection = (Button) findViewById(R.id.btn_kill_connection);
 	}
 
+    /**
+     * Sets the Listeners to all the UI Elements
+     */
 	private void setListeners() {
 		
 		btnOpenDoor.setOnClickListener(new OnClickListener() {
@@ -82,6 +96,9 @@ public class MainActivity extends SherlockActivity {
 		});
 	}
 	
+	/**
+	 * Tries to open a SSH-Connection to a RaspberryPi and executes a Command to handle a Servo and a Led 
+	 */
 	private void openDoor(){
 		showLoading(true);
     	new Thread(new Runnable() {
@@ -106,16 +123,17 @@ public class MainActivity extends SherlockActivity {
 		    			JSch jsch=new JSch();  
 		    			
 		    			sshSession = jsch.getSession(user, host, port);
+		    			
 		    			sshSession.setConfig(config);
 		    			sshSession.setPassword(pwd);
-		    			sshSession.setTimeout(25000);
+		    			sshSession.setTimeout(SSH_TIMEOUT);
 		    			sshSession.connect();
 		    			
 		    			msg.arg1 = CONNECTION_OK;
 		    		}
 		    		
 					channel = (ChannelExec) sshSession.openChannel("exec");
-					// Insert your command to execute the open.php script on your raspberry
+					// Set Command which should be executed by the Server e.g. "sudo php /open.php"
 					channel.setCommand(getApplicationContext().getResources().getString(R.string.command));
 					channel.setInputStream(null);
 					channel.setErrStream(System.err);
@@ -135,11 +153,20 @@ public class MainActivity extends SherlockActivity {
 		}).start();
 	}
 
+	/**
+	 * Kills the SSH-Connection between the App and the RaspberryPi
+	 */
     private void killConnection(){
     	sshSession.disconnect();
     	btnKillConnection.setEnabled(false);
     }
     
+    /**
+     * Handles the Async Messages
+     * 
+     * @author eiabea
+     *
+     */
     static class mHandler extends Handler{
         WeakReference<MainActivity> mAct;
 
@@ -152,13 +179,13 @@ public class MainActivity extends SherlockActivity {
 			MainActivity theAct = mAct.get();
 			switch (msg.arg1) {
 			case CONNECTION_OK:
-				Log.d("SSH", "Connected to Pi");
+				Log.d(TAG, "Connected to Pi");
 				theAct.btnKillConnection.setEnabled(true);
 				break;
 
 			default:
 				Toast.makeText(theAct, "Connection failed", Toast.LENGTH_SHORT).show();
-				Log.d("SSH", "Connection failed");
+				Log.d(TAG, "Connection failed");
 				break;
 			}
 			theAct.showLoading(false);
@@ -167,6 +194,11 @@ public class MainActivity extends SherlockActivity {
 
     }
     
+    /**
+     * Shows Indeterminate Loadingcircle
+     * 
+     * @param show true or false
+     */
 	private void showLoading(boolean show){
 		if(show){
 			getSherlock().setProgressBarIndeterminateVisibility(true);
@@ -175,6 +207,9 @@ public class MainActivity extends SherlockActivity {
 		}
 	}
 	
+	/**
+	 * Gets called when the App is opened and a new NFC-Tag was found
+	 */
     @Override
     public void onNewIntent(Intent intent) {
     	Log.i(TAG, "onNewIntent");
@@ -184,6 +219,11 @@ public class MainActivity extends SherlockActivity {
         resolveIntent(intent);
     }
     
+    /**
+     * Resolve the Intent which comes from a NFC-Tag
+     * 
+     * @param intent
+     */
     void resolveIntent(Intent intent) {
         // Parse the intent
         String action = intent.getAction();
@@ -205,6 +245,12 @@ public class MainActivity extends SherlockActivity {
         }
     }
 
+    /**
+     * Extracts the necessary Datastring from the NFC-Tag
+     * 
+     * @param rawMsgs Raw Data from the NFC-Tag
+     * @return clean Datastring or empty String
+     */
 	private String getNdefData(Parcelable[] rawMsgs) {
 		NdefMessage[] msgs;
         if (rawMsgs != null) {
