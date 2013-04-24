@@ -19,5 +19,10 @@
         android:layout_height="wrap_content"
         android:enabled="false"
         android:text="Kill Connection"/>
+    
+    <TextView 
+        android:id="@+id/txt_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

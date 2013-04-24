@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -41,6 +42,7 @@ public class MainActivity extends SherlockActivity {
 	
 	private Button btnOpenDoor;
 	private Button btnKillConnection;
+	private TextView txtStatus;
 	
 	private Session sshSession = null;
 	private ChannelExec channel;
@@ -72,6 +74,9 @@ public class MainActivity extends SherlockActivity {
     private void initUI() {
 		btnOpenDoor = (Button) findViewById(R.id.btn_open_door);
 		btnKillConnection = (Button) findViewById(R.id.btn_kill_connection);
+		
+		txtStatus = (TextView) findViewById(R.id.txt_status);
+		txtStatus.setText("Not connected");
 	}
 
     /**
@@ -108,7 +113,7 @@ public class MainActivity extends SherlockActivity {
 				Message msg = new Message();
 		    	try {
 		    		if(sshSession == null || !sshSession.isConnected()){
-		    			
+		    			txtStatus.setText("Connecting to Pi");
 		    			// Insert your parameters of your server
 		    			String host = getApplicationContext().getResources().getString(R.string.host);
 		    			String user = getApplicationContext().getResources().getString(R.string.user);
@@ -137,6 +142,7 @@ public class MainActivity extends SherlockActivity {
 					channel.setCommand(getApplicationContext().getResources().getString(R.string.command));
 					channel.setInputStream(null);
 					channel.setErrStream(System.err);
+					txtStatus.setText("Running Script on Pi");
 					channel.connect();
 		            
 		    	} catch (JSchException e) {
@@ -159,6 +165,7 @@ public class MainActivity extends SherlockActivity {
     private void killConnection(){
     	sshSession.disconnect();
     	btnKillConnection.setEnabled(false);
+    	txtStatus.setText("Not connected");
     }
     
     /**
@@ -180,11 +187,13 @@ public class MainActivity extends SherlockActivity {
 			switch (msg.arg1) {
 			case CONNECTION_OK:
 				Log.d(TAG, "Connected to Pi");
+				theAct.txtStatus.setText("Connected to Pi");
 				theAct.btnKillConnection.setEnabled(true);
 				break;
 
 			default:
 				Toast.makeText(theAct, "Connection failed", Toast.LENGTH_SHORT).show();
+				theAct.txtStatus.setText("Not connected");
 				Log.d(TAG, "Connection failed");
 				break;
 			}
