@@ -53,8 +53,6 @@ public class MainActivity extends SherlockActivity {
 	private Session sshSession = null;
 	private ChannelExec channel;
 	
-	private boolean appWasClosed = false;
-	
 	private mHandler handler = new mHandler(this);
 	
     @Override
@@ -71,7 +69,6 @@ public class MainActivity extends SherlockActivity {
         
         // Call resolveIntent only when it has nothing to do with default Actions
         if(!intent.getAction().equals(Intent.ACTION_MAIN)){
-        	appWasClosed = true;
         	resolveIntent(intent);
         }
         
@@ -79,7 +76,6 @@ public class MainActivity extends SherlockActivity {
 
     @Override
 	protected void onPause() {
-		appWasClosed = false;
 		super.onPause();
 	}
 
@@ -211,9 +207,8 @@ public class MainActivity extends SherlockActivity {
 				theAct.frmStatus.setBackgroundResource(R.drawable.shape_status_green);
 				theAct.btnKillConnection.setEnabled(true);
 				theAct.showLoading(false);
-				if(theAct.appWasClosed){
-					theAct.moveTaskToBack(true);
-				}
+				Toast.makeText(theAct, "Opened Door", Toast.LENGTH_SHORT).show();
+				theAct.moveTaskToBack(true);
 				break;
 				
 			case STATUS_RED:
@@ -264,7 +259,10 @@ public class MainActivity extends SherlockActivity {
     	
     	setIntent(intent);
         
-        resolveIntent(intent);
+        // Call resolveIntent only when it has nothing to do with default Actions
+        if(!intent.getAction().equals(Intent.ACTION_MAIN)){
+        	resolveIntent(intent);
+        }
     }
     
     /**
