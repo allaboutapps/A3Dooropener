@@ -247,8 +247,10 @@ public class MainActivity extends SherlockActivity {
      */
 	private void showLoading(boolean show){
 		if(show){
+			btnOpenDoor.setEnabled(false);
 			getSherlock().setProgressBarIndeterminateVisibility(true);
 		}else{
+			btnOpenDoor.setEnabled(true);
 			getSherlock().setProgressBarIndeterminateVisibility(false);
 		}
 	}
@@ -280,6 +282,7 @@ public class MainActivity extends SherlockActivity {
             
             String ndefDataString = getNdefData(rawMsgs);
             
+            // Open the Door only when the NFC-Tag contains the correct Data
             if(ndefDataString.equals(getResources().getString(R.string.nfc_data))){
             	openDoor();
             }
